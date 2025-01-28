@@ -27,12 +27,13 @@ import androidx.compose.ui.platform.LocalContext
 @Composable
 fun ContactListApp(viewModel: ContactViewModel) {
     val contacts by viewModel.contacts.collectAsState(initial = emptyList())
-    var showDialog by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(0) }
     val context = LocalContext.current
+    var id: Int by remember{ mutableStateOf(0) }
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = { showDialog = true }) {
+            FloatingActionButton(onClick = { showDialog = 1 }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Contact")
             }
         }
@@ -53,10 +54,9 @@ fun ContactListApp(viewModel: ContactViewModel) {
                     items(contacts) { contact ->
                         ContactListItem(
                             contact = contact,
-                            onEditClick = {/*
-                                selectedContact = contact
-                                showDialog = true
-                                */
+                            onEditClick = {
+                                showDialog = 2
+                                id = contact.id
                             },
                             onDeleteClick = { viewModel.deleteContact(contact) },
                             onCallClick = {
@@ -78,11 +78,20 @@ fun ContactListApp(viewModel: ContactViewModel) {
             }
         }
     }
-
-    if (showDialog) {
+//0->false 1-> true 2-> edit
+    if (showDialog==1 ) {
         ContactDialog(
-            onDismiss = { showDialog = false },
+            onDismiss = { showDialog = 0 },
             viewModel = viewModel
         )
     }
+    if(showDialog==2){
+        ContactDialog(
+            onDismiss = { showDialog = 0 },
+            viewModel = viewModel,
+            text = "Update" ,
+            id = id
+        )
+    }
+
 }

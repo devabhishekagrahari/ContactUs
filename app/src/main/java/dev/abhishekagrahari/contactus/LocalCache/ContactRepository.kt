@@ -9,4 +9,5 @@ class ContactRepository(private val dao: Dao) {
 
     suspend fun addItem(contactItem: ContactItem) = dao.insert(contactItem)
     suspend fun deleteSelectedTask(id: Int)= dao.deleteSelectedTask(id)
+    suspend fun updateContact(contact: ContactItem)= dao.updateContact(contact)
 }
