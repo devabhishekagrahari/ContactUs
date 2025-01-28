@@ -11,10 +11,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
 import dev.abhishekagrahari.contactus.ui.ContactListApp
 import dev.abhishekagrahari.contactus.ui.theme.ContactUsTheme
 import dev.abhishekagrahari.contactus.viewmodel.ContactViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.abhishekagrahari.contactus.ViewModel.ContactViewModelFactory
 import dev.abhishekagrahari.contactus.view.BaseLayout
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +26,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             ContactUsTheme {
                 BaseLayout{
-                    val viewModel: ContactViewModel = viewModel()
+                    val viewModel = ViewModelProvider(
+                        this,
+                        ContactViewModelFactory(applicationContext)
+                    ).get(ContactViewModel::class.java)
                     ContactListApp(viewModel)
                 }
             }

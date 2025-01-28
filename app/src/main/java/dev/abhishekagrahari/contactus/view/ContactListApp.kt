@@ -26,10 +26,10 @@ import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun ContactListApp(viewModel: ContactViewModel) {
-    val contacts by viewModel.contacts.collectAsState()
+    val contacts by viewModel.contacts.collectAsState(initial = emptyList())
     var showDialog by remember { mutableStateOf(false) }
     var selectedContact by remember { mutableStateOf<ContactItem?>(null) }
- val context = LocalContext.current
+    val context = LocalContext.current
 
     Scaffold(
         floatingActionButton = {
@@ -87,7 +87,7 @@ fun ContactListApp(viewModel: ContactViewModel) {
                 if (selectedContact == null) {
                     viewModel.addContact(name, phoneNumber)
                 } else {
-                    viewModel.updateContact(selectedContact!!, name, phoneNumber)
+                    /*viewModel.updateContact(selectedContact!!, name, phoneNumber)*/
                 }
                 selectedContact = null
                 showDialog = false
