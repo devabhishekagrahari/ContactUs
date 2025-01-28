@@ -13,19 +13,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import dev.abhishekagrahari.contactus.model.ContactItem
+import dev.abhishekagrahari.contactus.viewmodel.ContactViewModel
 
 @Composable
 fun ContactDialog(
-    contact: ContactItem?,
     onDismiss: () -> Unit,
-    onSave: (String, String) -> Unit
+    viewModel: ContactViewModel
 ) {
-    var name by remember { mutableStateOf(contact?.name ?: "") }
-    var phoneNumber by remember { mutableStateOf(contact?.phoneNumber ?: "") }
+    var name by remember { mutableStateOf( "") }
+    var phoneNumber by remember { mutableStateOf( "") }
 
     AlertDialog(
         onDismissRequest = { onDismiss() },
-        title = { Text(text = if (contact == null) "Add Contact" else "Edit Contact") },
+        title = {  Text("Add Contact" ) },
         text = {
             Column {
                 OutlinedTextField(
@@ -43,7 +43,14 @@ fun ContactDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = { onSave(name, phoneNumber) }) {
+            TextButton(onClick = {
+                if (name.isNotBlank() && phoneNumber.isNotBlank()) {
+                    // pass a function to add the elements
+                    viewModel.addContact(name, phoneNumber)
+                    name = "" // Clear the fields after submit
+                    phoneNumber = ""
+                }
+            }) {
                 Text(text = "Save")
             }
         },

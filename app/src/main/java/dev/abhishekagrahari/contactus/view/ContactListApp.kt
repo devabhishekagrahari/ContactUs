@@ -28,7 +28,6 @@ import androidx.compose.ui.platform.LocalContext
 fun ContactListApp(viewModel: ContactViewModel) {
     val contacts by viewModel.contacts.collectAsState(initial = emptyList())
     var showDialog by remember { mutableStateOf(false) }
-    var selectedContact by remember { mutableStateOf<ContactItem?>(null) }
     val context = LocalContext.current
 
     Scaffold(
@@ -54,9 +53,10 @@ fun ContactListApp(viewModel: ContactViewModel) {
                     items(contacts) { contact ->
                         ContactListItem(
                             contact = contact,
-                            onEditClick = {
+                            onEditClick = {/*
                                 selectedContact = contact
                                 showDialog = true
+                                */
                             },
                             onDeleteClick = { viewModel.deleteContact(contact) },
                             onCallClick = {
@@ -81,17 +81,8 @@ fun ContactListApp(viewModel: ContactViewModel) {
 
     if (showDialog) {
         ContactDialog(
-            contact = selectedContact,
             onDismiss = { showDialog = false },
-            onSave = { name, phoneNumber ->
-                if (selectedContact == null) {
-                    viewModel.addContact(name, phoneNumber)
-                } else {
-                    /*viewModel.updateContact(selectedContact!!, name, phoneNumber)*/
-                }
-                selectedContact = null
-                showDialog = false
-            }
+            viewModel = viewModel
         )
     }
 }
