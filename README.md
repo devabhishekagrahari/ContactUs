@@ -37,5 +37,5 @@ The app requires the following permissions:
 This project is licensed under the MIT License.
 
 ## Contact
-For queries, contact: [Your Email]
+For queries, contact: devabhishekagrahari@gmail.com 
 
